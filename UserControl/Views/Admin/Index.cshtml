@@ -1,0 +1,25 @@
+﻿@model List<ExibirUsuariosViewModel>
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div>
+    <h1>Página do Admin</h1>
+</div>
+<div>
+    <table>
+        <tr>
+            <th>Login</th>
+            <th>Senha</th>
+            <th>Perfil</th>
+        </tr>
+        @foreach (var usuario in Model)
+        {
+            <tr>
+                <td>@usuario.login</td>
+                <td>@usuario.senha</td>
+                <td>@usuario.perfil</td>
+            </tr>
+        }
+    </table>
+</div>

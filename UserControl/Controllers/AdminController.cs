@@ -24,23 +24,19 @@ namespace UserControl.Controllers
                 //mensagem de erro
                 return RedirectToAction("Index", "Home");
             }
-            return View();
-        }
 
-        [HttpGet]
-        public IActionResult ListarUsuarios()
-        {
             var listaDeUsuarios = _usuarioRepository.ObterUsuarios();
 
             var viewModelLista = new List<ExibirUsuariosViewModel>();
 
-            foreach(var usuario in listaDeUsuarios)
+            foreach (var usuario in listaDeUsuarios)
             {
-                if(usuario.Estado == true)
+                if (usuario.Estado == true)
                 {
                     var usuarioViewModel = new ExibirUsuariosViewModel()
                     {
                         login = usuario.Login,
+                        senha = usuario.Senha,
                         perfil = usuario.Perfil.Nome
                     };
                     viewModelLista.Add(usuarioViewModel);

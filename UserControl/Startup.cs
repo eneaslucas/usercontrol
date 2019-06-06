@@ -35,6 +35,7 @@ namespace UserControl
 
             services.AddSession();
             services.AddScoped<IUsuarioRepository, UsuarioRepository>();
+            services.AddScoped<IPerfilRepository, PerfilRepository>();
             services.AddScoped<UserControlContext>();
             
 

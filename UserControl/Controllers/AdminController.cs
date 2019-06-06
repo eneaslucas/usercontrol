@@ -8,11 +8,14 @@ namespace UserControl.Controllers
     public class AdminController : Controller
     {
         private IUsuarioRepository _usuarioRepository;
+        private IPerfilRepository _perfilRepository;
 
         public AdminController(
-            IUsuarioRepository usuarioRepository)
+            IUsuarioRepository usuarioRepository,
+            IPerfilRepository perfilRepository)
         {
             _usuarioRepository = usuarioRepository;
+            _perfilRepository = perfilRepository;
         }
 
         public IActionResult Index()
@@ -21,7 +24,7 @@ namespace UserControl.Controllers
 
             if (logado == null || logado.ToString() != "Administrador")
             {
-                //mensagem de erro
+                TempData["LoginErro"] = "Login ou senha incorretos.";
                 return RedirectToAction("Index", "Home");
             }
 
@@ -35,6 +38,7 @@ namespace UserControl.Controllers
                 {
                     var usuarioViewModel = new ExibirUsuariosViewModel()
                     {
+                        id = usuario.Id,
                         login = usuario.Login,
                         senha = usuario.Senha,
                         perfil = usuario.Perfil.Nome
@@ -52,16 +56,17 @@ namespace UserControl.Controllers
 
             if(usuario.Id <= 0)
             {
-                //mensagem de erro
-                //return para pagina de Listar usuarios
+                TempData["NaoExiste"] = "Usuario Inexistente.";
+                return RedirectToAction("Index");
             }
 
             var viewModelUpdate = new UsuarioUpdateViewModel()
             {
-                id = usuario.Id,
-                login = usuario.Login,
-                senha = usuario.Senha,
-                perfilNome = usuario.Perfil.Nome
+                Id = usuario.Id,
+                Login = usuario.Login,
+                Senha = usuario.Senha,
+                PerfilId = usuario.Perfil.Id,
+                PerfilNome = usuario.Perfil.Nome
             };
 
             return View(viewModelUpdate);
@@ -70,21 +75,23 @@ namespace UserControl.Controllers
         [HttpPost]
         public IActionResult EditarUsuario(UsuarioUpdateViewModel usuarioUpdateView)
         {
-            var usuario = _usuarioRepository.ObterUsuarioPorId(usuarioUpdateView.id);
-            usuario.Login = usuarioUpdateView.login;
-            usuario.Senha = usuarioUpdateView.senha;
-            usuario.Perfil.Id = usuarioUpdateView.perfilId;
+            var usuario = _usuarioRepository.ObterUsuarioPorId(usuarioUpdateView.Id);
+            var perfil = _perfilRepository.ObterPerfilPorId(usuarioUpdateView.PerfilId);
+            usuario.Login = usuarioUpdateView.Login;
+            usuario.Senha = usuarioUpdateView.Senha;
+            usuario.Perfil = perfil;
+            
 
-            if(string.IsNullOrEmpty(usuario.Login) || string.IsNullOrEmpty(usuario.Senha) ||
+            if (string.IsNullOrEmpty(usuario.Login) || string.IsNullOrEmpty(usuario.Senha) ||
                 usuario.Perfil.Id <= 0 || usuario.Perfil.Id > 2)
             {
-                //mensagem de erro
+                TempData["EditarErro"] = "Verifique se as informações estão corretas";
                 return RedirectToAction("EditarUsuario", "Admin", new { id = usuario.Id });
             }
             else
             {
                 _usuarioRepository.Update(usuario);
-                //mensagem de confirmação
+                TempData["EditarSucesso"] = "Usuario editado com sucesso!";
                 return RedirectToAction("EditarUsuario", "Admin", new { id = usuario.Id });
             }
 
@@ -95,15 +102,15 @@ namespace UserControl.Controllers
         {
             if(id <= 0)
             {
-                //mensagem de erro
-                return RedirectToAction("EditarUsuario", "Admin");
+                TempData["NaoExiste"] = "Usuario Inexistente.";
+                return RedirectToAction("Index", "Admin");
             }
 
             var usuario = _usuarioRepository.ObterUsuarioPorId(id);
             usuario.Estado = false;
             _usuarioRepository.Update(usuario);
-            //mensagem de sucesso
-            return RedirectToAction("EditarUsuario", "Admin");
+            TempData["DeletarSucesso"] = "Usuario deletado com sucesso!";
+            return RedirectToAction("Index", "Admin");
         }
     }
 }

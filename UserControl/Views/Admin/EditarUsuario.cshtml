@@ -1,0 +1,34 @@
+﻿@model UserControl.Models.UsuarioUpdateViewModel
+@{
+    ViewData["Title"] = "Editar Usuario";
+    var usuario = Model;
+}
+<div>
+    <p class="alert-danger text-center">@TempData["EditarErro"]</p>
+    <p class="alert-success text-center">@TempData["EditarSucesso"]</p>
+    <form action="\Admin\EditarUsuario" method="post">
+        <table>
+            <tr>
+                <th>Login</th>
+                <th>Senha</th>
+                <th>Perfil</th>
+            </tr>
+            <tr>
+                <td>
+                    <input type="hidden" name="Id" value="@usuario.Id" />
+                    <input class="form-control" type="text" name="Login" value="@usuario.Login" />
+                </td>
+                <td>
+                    <input class="form-control" type="text" name="Senha" value="@usuario.Senha" />
+                </td>
+                <td>
+                    <select name="PerfilId">
+                        <option value="1">Administrador</option>
+                        <option value="2">Usuário</option>
+                    </select>
+                </td>
+            </tr>
+        </table>
+        <input class="btn btn-success" type="submit" value="Atualizar" />
+    </form>
+</div>

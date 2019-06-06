@@ -34,7 +34,7 @@ namespace UserControl.Repositories
 
         public Usuario ObterUsuarioPorId(int id)
         {
-            var usuario = _context.Usuarios.Single(u => u.Id == id);
+            var usuario = _context.Usuarios.Include(p => p.Perfil).Single(u => u.Id == id);
 
             return usuario;
         }

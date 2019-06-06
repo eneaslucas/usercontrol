@@ -7,6 +7,9 @@
     <h1>Página do Admin</h1>
 </div>
 <div>
+    <p class="alert-danger text-center">@TempData["LoginErro"]</p>
+    <p class="alert-danger text-center">@TempData["NaoExiste"]</p>
+    <p class="alert-success text-center">@TempData["DeletarSucesso"]</p>
     <table>
         <tr>
             <th>Login</th>
@@ -19,6 +22,13 @@
                 <td>@usuario.login</td>
                 <td>@usuario.senha</td>
                 <td>@usuario.perfil</td>
+                <td><a class="btn btn-warning" href="Admin/EditarUsuario?id=@usuario.id">Editar</a></td>
+                <td>
+                    <form action="Admin/DeletarUsuario" method="post">
+                        <input type="hidden" name="id" value="@usuario.id" />
+                        <input type="submit" value="Deletar" class="btn btn-danger" />
+                    </form>
+                </td>
             </tr>
         }
     </table>

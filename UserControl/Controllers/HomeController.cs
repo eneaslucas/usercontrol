@@ -27,7 +27,7 @@ namespace UserControl.Controllers
 
             if (usuario.ValidaLogin() == false)
             {
-                //mensagem de erro
+                TempData["LoginErro"] = "Login ou senha incorretos.";
                 return View();
             }
 
@@ -36,7 +36,7 @@ namespace UserControl.Controllers
                 usuario = _usuarioRepository.ObterUsuarioPorLogin(login);
                 if (usuario.Estado == false)
                 {
-                    //mensagem de erro
+                    TempData["LoginErro"] = "Login ou senha incorretos.";
                     return View();
                 }
 
@@ -52,7 +52,7 @@ namespace UserControl.Controllers
                 }
                 else
                 {
-                    //mensagem de erro
+                    TempData["LoginErro"] = "Login ou senha incorretos.";
                     return View();
                 }
             }

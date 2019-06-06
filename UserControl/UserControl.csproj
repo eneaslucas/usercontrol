@@ -44,7 +44,7 @@
     <Content Update="Views\Admin\About.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>
-    <Content Update="Views\Admin\Contact.cshtml">
+    <Content Update="Views\Admin\EditarUsuario.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>
     <Content Update="Views\Admin\Index.cshtml">

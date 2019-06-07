@@ -9,5 +9,6 @@ namespace UserControl.Models
         Usuario ObterUsuarioPorId(int id);
         List<Usuario> ObterUsuarios();
         void Update(Usuario usuario);
+        void Salvar(Usuario usuario);
     }
 }

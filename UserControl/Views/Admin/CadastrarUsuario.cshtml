@@ -1,0 +1,23 @@
+﻿<div>
+    <p class="alert-danger text-center">@TempData["CadastrarErro"]</p>
+    <p class="alert-success text-center">@TempData["CadastrarSucesso"]</p>
+</div>
+<div>
+    <form action="\Admin\CadastrarUsuario" method="post">
+        <div>
+            <input class="form-control" type="text" name="Login" placeholder="Informe um login ..." />
+        </div>
+        <div>
+            <input class="form-control" type="text" name="Senha" placeholder="Informe uma senha ..." />
+        </div>
+        <div>
+            <select name="PerfilId">
+                <option value="1">Administrador</option>
+                <option value="2">Usuário</option>
+            </select>
+        </div>
+        <div>
+            <input class="btn btn-primary form-control" type="submit" value="Cadastrar" />
+        </div>
+    </form>
+</div>

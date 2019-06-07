@@ -48,6 +48,40 @@ namespace UserControl.Controllers
             }
             return View(viewModelLista);
         }
+        
+        [HttpGet]
+        public IActionResult CadastrarUsuario()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult CadastrarUsuario(string login, string senha, int perfilId)
+        {
+            Usuario usuario = new Usuario(login, senha);
+            if (!usuario.ValidaLogin())
+            {
+                TempData["CadastrarErro"] = "Login ou senha inválidos.";
+                return View();
+            }
+            else
+            {
+                
+                if (_usuarioRepository.Existe(login, senha))
+                {
+                    TempData["CadastrarErro"] = "Usuário já existe.";
+                    return View();
+                }
+                else
+                {
+                    usuario.Perfil =_perfilRepository.ObterPerfilPorId(perfilId);
+                    usuario.Estado = true;
+                    _usuarioRepository.Salvar(usuario);
+                    TempData["CadastrarSucesso"] = "Usuario cadastrado com sucesso.";
+                }
+            }
+            return View();
+        }
 
         [HttpGet]
         public IActionResult EditarUsuario(int id)
@@ -111,6 +145,13 @@ namespace UserControl.Controllers
             _usuarioRepository.Update(usuario);
             TempData["DeletarSucesso"] = "Usuario deletado com sucesso!";
             return RedirectToAction("Index", "Admin");
+        }
+
+        [HttpPost]
+        public IActionResult Logout()
+        {
+            HttpContext.Session.Remove("LogarAdm");
+            return RedirectToAction("Index", "Home");
         }
     }
 }

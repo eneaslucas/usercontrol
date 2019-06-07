@@ -51,5 +51,11 @@ namespace UserControl.Repositories
             _context.Usuarios.Update(usuario);
             _context.SaveChanges();
         }
+
+        public void Salvar (Usuario usuario)
+        {
+            _context.Usuarios.Add(usuario);
+            _context.SaveChanges();
+        }
     }
 }

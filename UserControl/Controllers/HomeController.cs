@@ -20,6 +20,12 @@ namespace UserControl.Controllers
             return View();
         }
 
+        [HttpGet]
+        public IActionResult Login()
+        {
+            return View();
+        }
+
         [HttpPost]
         public IActionResult Login(string login, string senha)
         {
@@ -28,7 +34,7 @@ namespace UserControl.Controllers
             if (usuario.ValidaLogin() == false)
             {
                 TempData["LoginErro"] = "Login ou senha incorretos.";
-                return View();
+                return RedirectToAction("Index");
             }
 
             if (_usuarioRepository.Existe(login, senha))
@@ -37,7 +43,7 @@ namespace UserControl.Controllers
                 if (usuario.Estado == false)
                 {
                     TempData["LoginErro"] = "Login ou senha incorretos.";
-                    return View();
+                    return RedirectToAction("Index");
                 }
 
                 if (usuario.Perfil.Id == 1)
@@ -53,10 +59,14 @@ namespace UserControl.Controllers
                 else
                 {
                     TempData["LoginErro"] = "Login ou senha incorretos.";
-                    return View();
+                    return RedirectToAction("Index");
                 }
             }
-            return View();
+            else
+            {
+                TempData["LoginErro"] = "Login ou senha incorretos.";
+                return RedirectToAction("Index");
+            }
         }
 
         public IActionResult About()

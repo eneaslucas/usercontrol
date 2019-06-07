@@ -17,5 +17,12 @@ namespace UserControl.Controllers
             }
             return View();
         }
+
+        [HttpPost]
+        public IActionResult Logout()
+        {
+            HttpContext.Session.Remove("LogarUser");
+            return RedirectToAction("Index", "Home");
+        }
     }
 }
